@@ -1,10 +1,8 @@
-// src/components/WordDefinition.tsx
 import React, { useState } from "react";
 import Select from "react-select";
 import { getWordDefinition } from "../services/wordService";
 
 const words = await getWordDefinition("");
-// const words = ["abate", "debunk", "haples", "example", "test", "sample"];
 
 const WordDefinition: React.FC = () => {
   const [word, setWord] = useState("");
@@ -14,7 +12,7 @@ const WordDefinition: React.FC = () => {
 
   const options = words.map((word: object) => ({
     value: word.word,
-    label: word.word, // Capitalize the first letter
+    label: word.word,
   }));
 
   const fetchDefinition = async () => {
@@ -26,7 +24,7 @@ const WordDefinition: React.FC = () => {
       if (data.length == 100) {
         setDefinition("");
       } else if (data.length > 0) {
-        setDefinition(data[0].definition); // Adjust based on your MockAPI response structure
+        setDefinition(data[0].definition);
       } else {
         setDefinition("Empty Definition :)");
       }
@@ -37,14 +35,8 @@ const WordDefinition: React.FC = () => {
     setLoading(false);
   };
 
-  //   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     console.log(word);
-  //     setWord(e.target.value);
-  //   };
-
-  const handleSelectChange = (selectedOption: any) => {
+  const handleSelectChange = (selectedOption: object) => {
     setWord(selectedOption ? selectedOption.value : "");
-    console.log(word);
   };
 
   const handleSearch = () => {
@@ -60,13 +52,6 @@ const WordDefinition: React.FC = () => {
         isClearable
         placeholder="Select a word"
       />
-      {/* <input
-        type="text"
-        value={word}
-        onChange={handleInputChange}
-        placeholder="Enter a word"
-        required
-      /> */}
       <button onClick={handleSearch} disabled={loading}>
         {loading ? "Loading..." : "Search"}
       </button>

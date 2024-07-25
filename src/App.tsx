@@ -1,11 +1,16 @@
 import React from "react";
-import "./App.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 import WordDefinition from "./components/WordDefinition";
+import "./App.css";
+
+const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <WordDefinition />
+    <div>
+      <QueryClientProvider client={queryClient}>
+        <WordDefinition />
+      </QueryClientProvider>
     </div>
   );
 };

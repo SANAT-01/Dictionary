@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import { useQuery } from "react-query";
 import { getWordDefinition } from "../services/wordService";
-
-const words = await getWordDefinition("");
 
 const WordDefinition: React.FC = () => {
   const [word, setWord] = useState("");
@@ -10,10 +9,19 @@ const WordDefinition: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const options = words.map((word: object) => ({
-    value: word.word,
-    label: word.word,
-  }));
+  // Fetching all the words using useQuery
+  const {
+    data: wordsData,
+    isLoading: wordsLoading,
+    error: wordsError,
+  } = useQuery("words", () => getWordDefinition(""));
+
+  const options = wordsData
+    ? wordsData.map((word: object) => ({
+        value: word.word,
+        label: word.word,
+      }))
+    : [];
 
   const fetchDefinition = async () => {
     setLoading(true);
@@ -42,6 +50,9 @@ const WordDefinition: React.FC = () => {
   const handleSearch = () => {
     fetchDefinition();
   };
+
+  if (wordsLoading) return <div>Loading words...</div>;
+  if (wordsError) return <div>Error loading words</div>;
 
   return (
     <div>

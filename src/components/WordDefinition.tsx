@@ -1,4 +1,3 @@
-// src/components/WordDefinition.tsx
 import React, { useState } from "react";
 import Select from "react-select";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -7,14 +6,13 @@ import {
   editWordDefinition,
   deleteWord,
 } from "../services/wordService";
-import AddWord from "./AddWord";
 
 const WordDefinition: React.FC = () => {
   const [word, setWord] = useState("");
-  const [definition, setDefinition] = useState<string | null>(null);
-  const [selectedWord, setSelectedWord] = useState<any>(null);
+  const [definition, setDefinition] = useState<string | null>("");
+  const [selectedWord, setSelectedWord] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>("");
 
   const queryClient = useQueryClient();
 
@@ -24,17 +22,17 @@ const WordDefinition: React.FC = () => {
     error: wordsError,
   } = useQuery("words", () => getWordDefinition(""));
 
-  const mutation = useMutation(
-    (newWord: { word: string; definition: string }) =>
-      addWordDefinition(newWord.word, newWord.definition),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("words");
-      },
-    }
-  );
+  // const mutation = useMutation(
+  //   (newWord: { word: string; definition: string }) =>
+  //     addWordDefinition(newWord.word, newWord.definition),
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries("words");
+  //     },
+  //   }
+  // );
 
-  const handleSelectChange = (selectedOption: any) => {
+  const handleSelectChange = (selectedOption: object) => {
     setSelectedWord(selectedOption);
     setWord(selectedOption ? selectedOption.value : "");
   };
@@ -63,7 +61,7 @@ const WordDefinition: React.FC = () => {
     if (selectedWord) {
       await editWordDefinition(selectedWord.id, definition || "");
       queryClient.invalidateQueries("words");
-      setSelectedWord(null);
+      setSelectedWord("");
       setWord("");
       setDefinition("");
     }
@@ -73,7 +71,7 @@ const WordDefinition: React.FC = () => {
     if (selectedWord) {
       await deleteWord(selectedWord.id);
       queryClient.invalidateQueries("words");
-      setSelectedWord(null);
+      setSelectedWord("");
       setWord("");
       setDefinition("");
     }
@@ -83,7 +81,7 @@ const WordDefinition: React.FC = () => {
   if (wordsError) return <div>Error loading words</div>;
 
   const options = wordsData
-    ? wordsData.map((word: any) => ({
+    ? wordsData.map((word: object) => ({
         value: word.word,
         label: word.word,
         id: word.id,
@@ -117,7 +115,6 @@ const WordDefinition: React.FC = () => {
           <button onClick={handleDeleteWord}>Delete</button>
         </div>
       )}
-      <AddWord />
     </div>
   );
 };

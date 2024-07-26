@@ -10,7 +10,6 @@ const AddWord: React.FC = () => {
       await addWordDefinition(word, definition);
       setWord("");
       setDefinition("");
-      // Optionally, you can add some notification or refresh the word list
     }
   };
 
@@ -21,15 +20,15 @@ const AddWord: React.FC = () => {
         type="text"
         value={word}
         onChange={(e) => setWord(e.target.value)}
-        placeholder="Enter word"
+        placeholder="Enter new word"
       />
       <input
         type="text"
         value={definition}
         onChange={(e) => setDefinition(e.target.value)}
-        placeholder="Enter definition"
+        placeholder="Enter it's definition"
       />
-      <button onClick={handleAddWord}>Add Word</button>
+      <button onClick={handleAddWord}>Add This Word</button>
     </div>
   );
 };

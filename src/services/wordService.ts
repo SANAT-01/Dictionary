@@ -1,7 +1,6 @@
-// src/services/wordService.ts
 import axios from "axios";
 
-const API_URL = "https://669f5faab132e2c136fd98de.mockapi.io/words";
+const API_URL = "https://66a3325444aa6370458052df.mockapi.io/words";
 
 export const getWordDefinition = async (word: string) => {
   const response = await axios.get(`${API_URL}?search=${word}`);
